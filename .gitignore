@@ -2,3 +2,4 @@
 .gwt/
 .settings/
 .project
+war/WEB-INF/classes/pgu/sample/
