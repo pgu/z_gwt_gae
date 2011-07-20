@@ -1,0 +1,2 @@
+serviceClass: pgu.sample.client.GreetingService
+path: 8EA3C7CCC6BCFE171245329FD0BE743B.gwt.rpc
