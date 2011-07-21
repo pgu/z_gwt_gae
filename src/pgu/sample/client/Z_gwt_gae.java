@@ -8,6 +8,7 @@ import pgu.sample.shared.FieldVerifier;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -21,7 +22,6 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
-import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
@@ -64,11 +64,12 @@ public class Z_gwt_gae implements EntryPoint {
     @Override
     public void onModuleLoad() {
 
+        ToolbarPlanning toolbarPlanning = new ToolbarPlanning();
         // ////////////////////////////////////////////////////////////////
         // table de gauche avec les noms de personnes
         // ////////////////////////////////////////////////////////////////
         final FlexTable tablePersons = new FlexTable();
-        final FlexCellFormatter cellFormatterPersons = tablePersons.getFlexCellFormatter();
+        tablePersons.getFlexCellFormatter();
         tablePersons.setCellSpacing(0);
         tablePersons.setCellPadding(0);
 
@@ -86,7 +87,6 @@ public class Z_gwt_gae implements EntryPoint {
             tablePersons.setHTML(row + 1, COL_NAMES, "<div style=\"height:30px;overflow:hidden;\">&nbsp;</div>");
 
             // cellFormatterPersons.setRowSpan(row, COL_NAMES, 2);
-            cellFormatterPersons.setVerticalAlignment(row, COL_NAMES, HasVerticalAlignment.ALIGN_BOTTOM);
             row += 2;
         }
 
@@ -123,11 +123,11 @@ public class Z_gwt_gae implements EntryPoint {
                 final int row2 = personIndex + 1;
 
                 if (col == 0) { // colonne before 0h00
-                    tableHours.setWidget(row1, 0, new PlanningCell(row1, 0).disable());
-                    tableHours.setWidget(row2, 0, new PlanningCell(row2, 0).disable());
+                    tableHours.setWidget(row1, 0, new PlanningCell(row1, 0, toolbarPlanning).disable());
+                    tableHours.setWidget(row2, 0, new PlanningCell(row2, 0, toolbarPlanning).disable());
                 } else {
-                    tableHours.setWidget(row1, col, new PlanningCell(row1, col));
-                    tableHours.setWidget(row2, col, new PlanningCell(row2, col));
+                    tableHours.setWidget(row1, col, new PlanningCell(row1, col, toolbarPlanning));
+                    tableHours.setWidget(row2, col, new PlanningCell(row2, col, toolbarPlanning));
                 }
             }
         }
@@ -162,7 +162,14 @@ public class Z_gwt_gae implements EntryPoint {
         scrollPanelDays.setWidth("600px");
         hp.add(scrollPanelDays);
 
-        RootPanel.get().add(hp);
+        final Label title = new Label("Planning");
+        title.getElement().getStyle().setFontSize(24, Unit.PX);
+
+        final VerticalPanel vp = new VerticalPanel();
+        vp.add(title);
+        vp.add(toolbarPlanning);
+        vp.add(hp);
+        RootPanel.get().add(vp);
         DOM.scrollIntoView(tableHours.getWidget(ROW_HOURS, 10).getElement());
     }
 
